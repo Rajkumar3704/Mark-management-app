@@ -1,0 +1,23 @@
+<div class="container">
+  <% if user_signed_in? %>
+    <% if current_user.email == "admin@in" %>
+      <h2>Welcome, Admin!</h2>
+      <p>You have full access to manage courses, faculties, and students in our system.</p>
+      
+    <% elsif current_user.role == "faculty"  %>
+      <h2>Welcome!</h2>
+      <p>As a faculty member, you can view your courses and enter marks for students.</p>
+     
+    <% elsif current_user.role == "student" %>
+        <% st_name = "student" %>
+      <h2>Welcome, <%= st_name %>!</h2>
+      <p>Explore and enroll in courses. View your grades and progress.</p>
+   
+    <% end %>
+  <% else %>
+    <h2>Welcome to Our App</h2>
+    <p>Please sign in or create an account to explore our services.</p>
+    <%= link_to "Sign In", new_user_session_path, class: "btn btn-primary" %>
+    <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-secondary" %>
+  <% end %>
+</div>

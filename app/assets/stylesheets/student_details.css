@@ -1,0 +1,38 @@
+/* app/assets/stylesheets/student_details.css */
+
+.form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn-success:hover {
+    background-color: #218838;
+  }
+  
+  .error-messages {
+    color: red;
+    margin-bottom: 20px;
+  }
+  

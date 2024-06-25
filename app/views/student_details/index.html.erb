@@ -1,0 +1,161 @@
+<% if current_user.role == "admin" %>
+        <h1>Student details</h1>
+        <p style="color: green"><%= notice %></p>
+
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">Student Name</th>
+                <th scope="col">Roll Number</th>
+              
+                <th collapse="3"></th>
+                <th collapse="3"></th>
+                <th collapse="3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @student_details.each do |student_detail| %>
+              
+                <tr>
+                  <td><%= student_detail.first_name+" "+student_detail.last_name %></td>
+                  <td><%= student_detail.roll_no %></td>
+                  
+                  <td>
+                    <%= link_to "show", student_detail, class: "btn btn-primary" %>
+                  </td>
+                  
+                </tr>
+
+                <% end %>
+            
+            </tbody>
+          </table>
+
+
+<% elsif current_user.role == "student" %>
+
+       
+
+          <% if @student_details.empty? %>
+          <div id="student_details">
+            <p>Your details are not available, please add your details</p>
+            <%= link_to "Add your detail", new_student_detail_path, class: "btn btn-primary" %>
+             </div>
+          <% else %>
+            <% @student_details.each do |student_detail| %>
+              <%= render student_detail %>
+            <% end %>
+          <% end %>
+
+       
+
+  
+<% elsif current_user.role == "faculty" %>
+
+<!--
+  <h1>Student details</h1>
+          <p style="color: green"><%= notice %></p>
+
+          <table class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">Student Name</th>
+                <th scope="col">Student Id</th>
+                <th scope="col">Courses</th>
+                <th collapse="3"></th>
+                <th collapse="3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @student_details.each do |student_detail| %>
+              
+                <tr>
+                  <td><%= student_detail.first_name+" "+student_detail.last_name %></td>
+                  <td><%= student_detail.user_id %></td>
+
+                  <% 
+                    c_name =""
+                    cids = CourseStudent.where(s_id: student_detail.user_id).pluck(:c_id)
+                    f_id = Faculty.where(user_id: current_user.id).pluck(:faculty_id)
+                    c_name = Course.where(id: cids,faculty_id: f_id).pluck(:course_title)
+
+                  %>
+                   <td><%= c_name.to_s %></td>
+                  <td>
+                    <%= link_to "show", student_detail, class: "btn btn-primary" %>
+                  </td>
+
+                  <td>
+                    <%= link_to "Add Mark", new_st_mark_path, class: "btn btn-success" %>
+                  </td>
+                  
+                </tr>
+
+                <% end %>
+            
+            </tbody>
+          </table>
+        
+
+    -->
+    
+    <h1>Student details</h1>
+    <p style="color: green"><%= notice %></p>
+
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Student Name</th>
+          <th scope="col">Student Id</th>
+          <th scope="col">Courses</th>
+          <th collapse="3"></th>
+          <th collapse="3"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @student_details.each do |student_detail| %>
+
+           <% 
+              cids = CourseStudent.where(s_id: student_detail.user_id).pluck(:c_id)
+              f_id = Faculty.where(user_id: current_user.id).pluck(:faculty_id)
+              codes = Course.where(id: cids,faculty_id: f_id).pluck(:course_code,:credits,:course_title)
+              st_name = student_detail.first_name+" "+student_detail.last_name
+            %>
+
+            <% codes.each do |code| %>
+              
+              <tr>
+                <td><%=  st_name %></td>
+                <td><%= student_detail.user_id %></td>
+
+              
+                <td><%= code[0].to_s %></td>
+                <td>
+                  <%= link_to "show", student_detail, class: "btn btn-primary" %>
+                </td>
+                <% if StMark.exists?(s_id: student_detail.user_id, course_id: code[0]) %>
+                <% st_m = StMark.find_by(s_id: student_detail.user_id, course_id: code[0]) %>
+                  <td>
+                    <%= link_to "Edit Mark", edit_st_mark_path(st_m), class:"btn btn-warning"%>
+                  </td>
+                <% else %>
+                <td>
+                  <%= link_to "Add Mark", new_st_mark_path(name: st_name,course_id: code[0].to_i, s_id: student_detail.user_id, credit: code[1].to_i, course_title: code[2].to_s ), class: "btn btn-success" %>
+                </td>
+
+                <% end %>
+
+
+                
+              </tr>
+            <% end %>
+         
+          <% end %>
+      
+      </tbody>
+    </table>
+  
+
+
+
+  <% end %>

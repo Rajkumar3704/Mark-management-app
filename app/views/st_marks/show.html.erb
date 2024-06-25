@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @st_mark %>
+
+<div>
+  <%= link_to "Edit this st mark", edit_st_mark_path(@st_mark) %> |
+  <%= link_to "Back to st marks", st_marks_path %>
+
+  <%= button_to "Destroy this st mark", @st_mark, method: :delete %>
+</div>
